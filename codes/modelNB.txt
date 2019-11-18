@@ -1,0 +1,32 @@
+Model:
+N: 7
+Ny:
+  poisonous: 3
+  edible: 4
+Nxiy:
+  poisonous
+    cap-shape
+      convex: 3
+    cap-color
+      brown: 1
+      white: 2
+    gill-size
+      narrow: 3
+    gill-color
+      black: 1
+      brown: 1
+      pink: 1
+  edible
+    cap-shape
+      convex: 2
+      bell: 2
+    cap-color
+      yellow: 2
+      white: 2
+    gill-size
+      broad: 4
+    gill-color
+      black: 1
+      brown: 3
+      
+class(convex, brown, narrow, black): poisonous
