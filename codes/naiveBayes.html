@@ -114,7 +114,12 @@
 114
 115
 116
-117</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Collections</span>;
+117
+118
+119
+120
+121
+122</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Collections</span>;
 <span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Collections.Generic</span>;
 <span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">UnityEngine</span>;
 <span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Linq</span>;
@@ -189,15 +194,20 @@
 
     <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">predict</span>()
     {
-        Func&lt;<span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">float</span>&gt; laplace =
-            (x) =&gt; (x + <span style="color: #6600EE; font-weight: bold">1.0f</span>) / N;
+        Func&lt;<span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">double</span>&gt; laplace =
+            (x, y) =&gt; (x + <span style="color: #6600EE; font-weight: bold">1.0</span>) / (y + N);
 
-        Func&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">float</span>&gt; probability = 
-            (cl) =&gt; laplace(Ny[cl]) *
+        Func&lt;<span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">double</span>&gt; normal =
+            (x, y) =&gt; (<span style="color: #333399; font-weight: bold">double</span>)x / y;
+
+        Func&lt;<span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">double</span>&gt; actual = laplace;    
+
+        Func&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">double</span>&gt; probability = 
+            (cl) =&gt; actual(Ny[cl], N) *
             Enumerable.Range(<span style="color: #6600EE; font-weight: bold">0</span>, features.Length).Select(
                 i =&gt; Nxiy[cl][features[i]].ContainsKey(test[i]) ? 
-                    laplace(Nxiy[cl][features[i]][test[i]]) : 
-                    laplace(<span style="color: #6600EE; font-weight: bold">0</span>)
+                    actual(Nxiy[cl][features[i]][test[i]], Ny[cl]) : 
+                    actual(<span style="color: #6600EE; font-weight: bold">0</span>, Ny[cl])
                 ).Aggregate(
                     (x, y) =&gt; x * y);
 

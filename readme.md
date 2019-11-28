@@ -21,15 +21,15 @@ class: left, middle, inverse
 
 * .cyan[Introduction]
 
-* Naïve Bayes
+* Machine Learning
 
-* Decision Trees
+* Deep Learning
 
 * Reinforcement Learning
 
-* Genetic Algorithms
+* Unity ML-Agents Toolkit
 
-* Deep Learning
+* Genetic Algorithms
 
 * References
 
@@ -176,25 +176,6 @@ $$h(T)=y_i$$
 
 ---
 
-# Some categories
-
-#### When?
-
-- .blue[Online]: learn as playing
-
-- .blue[Offline]: learn from saved matches
-
-#### What?
-
-- .blue[Intra-Behaviour]: atomic behaviour 
-  - Example: previous examples of braking or curves
-
-- .blue[Inter-Behaviour]: learns Decision Taking layer
-  - Example: [SC2LE(StarCraft II Learning Environment)](https://arxiv.org/abs/1708.04782)
-
-
----
-
 # Decision Learning
 
 - A basic application is learning .blue[decisions] from .blue[observations]
@@ -208,6 +189,29 @@ $$h(T)=y_i$$
 - .blue[The Balance of Effort]
 
   - Many times is harder learning than human dessign (such as Behaviour Tree)
+
+---
+
+# Some categories
+
+#### When?
+
+- .blue[Online]: learn as playing
+
+- .blue[Offline]: 
+  - learn from saved matches
+  - .blue[bootstrapping]: AI component playing among them <br>
+    Same algorithm with diferent paramenters <br>
+    Diferent algorithms <br>
+    ([See chess example](https://arxiv.org/pdf/1509.01549v2.pdf))
+
+#### What?
+
+- .blue[Intra-Behaviour]: atomic behaviour 
+  - Example: previous examples of braking or curves
+
+- .blue[Inter-Behaviour]: learns Decision Taking layer
+  - Example: [SC2LE(StarCraft II Learning Environment)](https://arxiv.org/abs/1708.04782)
 
 ---
 
@@ -236,15 +240,15 @@ class: left, middle, inverse
 
 * .brown[Introduction]
 
-* .cyan[Naïve Bayes]
+* .cyan[Machine Learning]
 
-* Decision Trees
+* Deep Learning
 
 * Reinforcement Learning
 
-* Genetic Algorithms
+* Unity ML-Agents Toolkit
 
-* Deep Learning
+* Genetic Algorithms
 
 * References
 
@@ -335,8 +339,7 @@ $$P(x_i|y)\approx\frac{N(x_i|y)+1}{N(y)+N}$$
 
 #### Implementation
 
-- Implementation in C#
-  - [view](codes/naiveBayes.html).red[*] / [output](codes/modelNB.txt) / [download code](codes/naiveBayes.cs)
+- Using LINQ of C#: [view](codes/naiveBayes.html).red[*] / [output](codes/modelNB.txt) / [download code](codes/naiveBayes.cs)
 
 .footnote[.red[*] Formated with http://hilite.me/]
 
@@ -344,10 +347,242 @@ $$P(x_i|y)\approx\frac{N(x_i|y)+1}{N(y)+N}$$
 
 # Gaussian Naïve Bayes
 
+* How about numerical features?
+
+| Brake? | Distance | Speed |
+|-------:|---------:|------:|
+| Y      | 2.4      | 11.3  |
+| Y      | 3.2      | 70.2  |
+| N      | 75.7     | 72.7  |
+| N      | 2.8      | 15.2  |
+| %?     | 79.2     | 12.1  |
+.center[Source: (Millington, 2019)]
+
+$$P(x_i|y)=\frac{1}{\sqrt{2\pi\sigma_y^2}}\exp\left(-\frac{(x_i-\mu_y)^2}{2\sigma_y^2}\right)$$
+
+.center[where $\mu_y=\frac{x_1^y+\cdots+x_n^y}{n_y}$ and $\sigma_y^2=\frac{(x_1^y - \mu_y)^2+\cdots+(x_n^y - \mu_y)^2}{n_y-1}$]
+
 
 ---
 
-DTs i Gini
+# Gaussian Naïve Bayes
+
+.col5050[
+.col1[
+**Learning model:**
+
+| $y$  | $P(y)$ |
+|:-----|-------:|
+| Y    | 0.5    |
+| N    | 0.5    |
+
+<br>
+
+|                 | Distance | Speed     |
+|:----------------|---------:|----------:|
+| $\mu_Y$         | 2.8      | 40.75     |
+| $\mu_N$         | 39.25    | 43.95     |
+| $\sigma_Y^2$    | 0.32     | 1734.605  |
+| $\sigma_N^2$    | 2657.205 | 1653.125  |
+]
+.col2[
+**Classification:**
+
+$$P(Y|T)=0.5\cdot 0.0\cdot 0.00669 = 0.0$$
+
+$$P(N|T)=0.5\cdot 0.00573\cdot 0.00722 = 0.00002$$
+
+$$h(T)=N$$
+
+**Note:**
+
+$$P(speed=12.1|Y)=\frac{1}{\sqrt{2\cdot\pi\cdot 1734.605}}\cdot$$
+
+$$\cdot \exp\left(-\frac{(12.1-40.75)^2}{2\cdot 1734.605}\right)=0.00669$$
+]]
+
+---
+
+# Decision Trees
+
+**Splitting measure:**
+
+- Decision Trees: $accuracy=\frac{N(ok)}{N}$
+
+- ID3: $entropy=-\sum_{\forall y} P(y) \cdot log_2(P(y))$
+
+- CART: $gini = 1 - \sum_{\forall y} P(y)^2$ + binary trees
+
+- .blue[Our approach]: $gini$ + k-ary trees
+
+  - nominal and numeric features
+
+  - classification and regression
+
+  - one of the easiest decision trees
+
+---
+
+# Example I
+
+.cols5050[
+.col1[
+| class      | cap-shape | cap-color |
+|:-----------|:----------|:----------|
+| poisonous  | convex    | brown     |
+| edible     | convex    | yellow    |
+| edible     | bell      | white     |
+| poisonous  | convex    | white     |
+| edible     | convex    | yellow    |
+| edible     | bell      | white     |
+| poisonous  | convex    | white     |
+]
+.col2[
+**algorithm:**
+
+each node of the tree from 
+
+the minimum weighted sum of
+
+ _Gini index_:
+
+.small[$gini = 1 - \sum_{\forall y} P(y)^2$]
+]]
+
+---
+
+# Example II
+
+**cap-shape:**
+
+| cap-shape | poisonous | edible | #examples |
+|----------:|----------:|-------:|----------:|
+| convex    | 3         | 2      | 5         |
+| bell      | 0         | 2      | 2         |
+
+.small[
+.blue[For each _value_:]
+
+$gini(\text{cap-shape}=\text{convex})=1-(\frac{3}{5})^2-(\frac{2}{5})^2=0.48$
+
+$gini(\text{cap-shape}=\text{bell})=1-(\frac{0}{2})^2-(\frac{2}{2})^2=0.0$
+
+.blue[_Weighted sum_:]
+
+$gini(\text{cap-shape})=\frac{5}{7}\cdot 0.48+\frac{2}{7}\cdot 0.0=0.343$
+]
+
+---
+
+# Example III
+
+**cap-color:**
+
+| cap-color | poisonous | edible | #examples |
+|----------:|----------:|-------:|----------:|
+| brown     | 1         | 0      | 1         |
+| yellow    | 0         | 2      | 2         |
+| white     | 2         | 2      | 4         |
+
+.small[
+.blue[For each _value_:]
+
+$gini(\text{cap-color}=\text{brown})=1-(\frac{1}{1})^2-(\frac{0}{1})^2=0.0$
+
+$gini(\text{cap-color}=\text{yellow})=1-(\frac{0}{2})^2-(\frac{2}{2})^2=0.0$
+
+$gini(\text{cap-color}=\text{white})=1-(\frac{2}{4})^2-(\frac{2}{4})^2=0.5$
+
+.blue[_Weighted sum_:]
+
+$gini(\text{cap-color})=\frac{1}{7}\cdot 0.0+\frac{2}{7}\cdot 0.0+\frac{4}{7}\cdot 0.5=0.286$
+]
+
+---
+
+# Example IV
+
+**Selecting best feature:**
+
+- best feature will be that with minimum _gini index_:
+
+.small[
+$$\text{best_feature}=\min((0.343,\text{cap-shape}),(0.286,\text{cap-color}))=\text{cap-color}$$
+]
+
+- every value with only a class will be a _leaf_:
+  - brown $\rightarrow$ poisonous
+  - yellow $\rightarrow$ edible
+
+- a new set is built for the rest of values
+
+.center[
+| class      | cap-shape |
+|:-----------|:----------|
+| edible     | bell      |
+| poisonous  | convex    |
+| edible     | bell      |
+| poisonous  | convex    |
+_white_ examples without _cap-color_
+]
+
+- the process restarts with the new set
+
+---
+
+# Example V
+
+**Resulting Tree:**
+
+.center[
+![:scale 75%](figures/dt.png)
+]
+
+
+---
+
+# Cutting Points I
+
+**What about numerical attributes?**
+
+| class      | width |
+|:-----------|------:|
+| versicolor | 2.9   |
+| versicolor | 2.9   |
+| virginica  | 3.0   |
+| virginica  | 2.5   |
+
+**Cutting points:**
+
+| class      | width | cutting points | weighted ginis |
+|:-----------|------:|---------------:|:---------------|
+| virginica  | 2.5   |      |   | 
+| versicolor | 2.9   | 2.7  | $\frac{1}{4}\cdot 0.0+\frac{3}{4}\cdot 0.45=0.0.3375$ |
+| versicolor | 2.9   |      |   |
+| virginica  | 3.0   | 2.95 | $\frac{3}{4}\cdot 0.45+\frac{1}{4}\cdot 0.0=0.0.3375$ |
+.center[.small[cutting points for _width_ attribute]]
+
+---
+
+# Cutting Points II
+
+**Gini example:**
+
+| width | versicolor | virginica | #examples | gini |
+|:------|-----------:|----------:|----------:|:-----|
+| < 2.7 | 0 | 1 | 1 | $1-(\frac{0}{1})^2-(\frac{1}{1})^2=0$ |
+| > 2.7 | 2 | 1 | 3 | $1-(\frac{2}{3})^2-(\frac{1}{3})^2=0.45$ |
+
+**Resulting Tree:**
+
+.center[
+![:scale 50%](figures/dt-ct.png)
+]
+
+---
+
+# Regression
+
 
 ---
 class: left, middle, inverse
@@ -356,21 +591,178 @@ class: left, middle, inverse
 
 * .brown[Introduction]
 
-* .brown[Naïve Bayes]
+* .brown[Machine Learning]
 
-* .brown[Decision Trees]
+* .cyan[Deep Learning]
 
-* .cyan[Reinforcement Learning]
+* Reinforcement Learning
+
+* Unity ML-Agents Toolkit
 
 * Genetic Algorithms
 
-* Deep Learning
-
 * References
 
 ---
 
-PAC3 del Samir i llibre UOC
+# Artificial Neuron Model
+
+.center[![:scale 55%](figures/neuron.png)]
+
+.center[![:scale 60%](figures/neuron_model.png)]
+
+.footnote[Source: [Artificial Neuron](http://www.gabormelli.com/RKB/Artificial_Neuron)]
+
+---
+
+# Perceptron
+
+.cols5050[
+.col1[
+
+- Classification and regression
+
+- Linear model
+
+- Classification:
+
+$$h(x)=f(\sum_{i=1}^n w_i x_i + b)$$
+
+- Learning rule:
+
+$$w_i'=w_i+\eta(h(x)-y)$$
+]
+.col2[
+
+![:scale 100%](figures/hyperplane.png)
+
+]]
+
+- Example in sklearn:
+  - [view](codes/nn-sklearn.html) / [download](codes/nn-sklearn.ipynb) / [reference](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Perceptron.html)
+
+---
+
+# Multi-layer Perceptron
+
+.col5050[
+.col1[- One hidden layer
+
+- Non-linear model
+
+- Classification & regression
+
+- [Backpropagation](https://en.wikipedia.org/wiki/Backpropagation) as training algorithm
+
+- Example in sklearn:
+  - [view](codes/nn-sklearn.html) / [download](codes/nn-sklearn.ipynb) / [reference](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier)
+
+- Main parameters:
+  - hidden_layer_sizes
+  - activation
+  - max_iter
+
+]
+.col2[
+![:scale 110%](figures/mlp.png)
+]]
+
+.footnote[Source: [wikipedia](https://en.wikipedia.org/wiki/Artificial_neural_network)]
+
+---
+
+# Bias, Variance & Overfitting
+
+![](figures/bias.png)![](figures/early-stopping.png)
+
+Normal use of a validation set to select parameters & avoid overfitting (to much learning)!
+
+.footnote[Source: [left](https://towardsdatascience.com/regularization-the-path-to-bias-variance-trade-off-b7a7088b4577), [right](https://elitedatascience.com/overfitting-in-machine-learning)]
+
+---
+
+# Deep Learning
+
+- Neural network with 2 or more hidden layers
+
+![](figures/chart-1.png)
+
+.cols5050[
+.col1[
+![](figures/chart-2.png)
+]
+.col1[
+**Examples:**
+
+- Sklearn on Iris
+  - [view](codes/nn-sklearn.html) / [download](codes/nn-sklearn.ipynb)
+
+- Keras on MNIST
+  - [view](codes/keras-mlp.html) / [download](codes/keras-mlp.ipynb) / [Source](https://github.com/keras-team/keras)
+]
+]
+
+.footnote[Source: [The Neural Network Zoo](https://www.asimovinstitute.org/neural-network-zoo/)]
+
+---
+
+# Convolutional Neural Networks
+
+**from Computer Vision**
+
+to process image & video
+
+![:scale 90%](figures/cnn2.png)
+
+.footnote[Source: [A Comprehensive Guide to Convolutional Neural Networks](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)]
+
+---
+
+# Convolutional Neural Networks II
+
+.cols5050[
+.col1[
+- Convolution: extract the high-level features such as edges
+
+- Pooling: reduce dimensionality for 
+  - computational cost
+  - extracting dominant features which are rotational and positional invariant
+
+- Example:
+  - Keras on MNIST
+  - [view](codes/keras-cnn.html) / [download](codes/keras-cnn.ipynb) / [Source](https://github.com/keras-team/keras)
+]
+.col2[
+![:scale 70%](figures/convolutional.gif)
+
+![:scale 80%](figures/pooling.gif)
+]]
+
+.footnote[Source: [A Comprehensive Guide to Convolutional Neural Networks](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)]
+
+---
+
+# The Neural Network Zoo
+
+![:scale 90%](figures/zoo-1.png)
+
+.footnote[Source: [The Neural Network Zoo](https://www.asimovinstitute.org/neural-network-zoo/)]
+
+---
+
+# The Neural Network Zoo II
+
+![:scale 90%](figures/zoo-2.png)
+
+.footnote[Source: [The Neural Network Zoo](https://www.asimovinstitute.org/neural-network-zoo/)]
+
+---
+
+# The Neural Network Zoo III
+
+![:scale 90%](figures/zoo-3.png)
+
+.footnote[Source: [The Neural Network Zoo](https://www.asimovinstitute.org/neural-network-zoo/)]
 
 ---
 class: left, middle, inverse
@@ -379,21 +771,121 @@ class: left, middle, inverse
 
 * .brown[Introduction]
 
-* .brown[Naïve Bayes]
+* .brown[Machine Learning]
 
-* .brown[Decision Trees]
+* .brown[Deep Learning]
 
-* .brown[Reinforcement Learning]
+* .cyan[Reinforcement Learning]
 
-* .cyan[Genetic Algorithms]
+* Unity ML-Agents Toolkit
 
-* Deep Learning
+* Genetic Algorithms
 
 * References
 
 ---
 
-llibre uoc i transpes iaae
+# Reinforcement Learning
+
+![:scale 65%](figures/rl.png)
+
+.cols5050[
+.col1[
+- an _agent_
+- a set of states $S$
+- a set of actions $A$
+
+]
+.col2[
+Learning a reward function $Q: S \times A \to \mathbb{R}$ for maximizing the total future reward.
+
+]]
+
+- _Q-Learning_: method for learning an aproximation of $Q$.
+
+.footnote[Source: [My Journey Into Deep Q-Learning with Keras and Gym](https://medium.com/@gtnjuvin/my-journey-into-deep-q-learning-with-keras-and-gym-3e779cc12762)]
+
+---
+
+# Reinforcement Learning II
+
+Training example:
+
+.center[![:scale 55%](figures/q-matrix.png)]
+
+.footnote[Source: [Reinforcement Q-Learning from Scratch in Python with OpenAI Gym](https://www.learndatasci.com/tutorials/reinforcement-q-learning-scratch-python-openai-gym/)]
+
+---
+
+# Deep Reinforcement Learning
+
+- Convolutional Neural Network for learning $Q$ <br>
+
+.center[[![:scale 65%](figures/breakout.png)](https://www.youtube.com/watch?v=TmPfTpjtdgg&feature=youtu.be)]
+
+.footnote[Source: [Deep Reinforcement Learning](https://deepmind.com/blog/article/deep-reinforcement-learning)]
+
+---
+class: left, middle, inverse
+
+# Outline
+
+* .brown[Introduction]
+
+* .brown[Machine Learning]
+
+* .brown[Deep Learning]
+
+* .brown[Reinforcement Learning]
+
+* .cyan[Unity ML-Agents Toolkit]
+
+* Genetic Algorithms
+
+* References
+
+---
+
+# ML-Agents
+
+Unity plugin for training intelligent agents.
+
+[![:scale 70%](figures/mlagents.png)](https://www.youtube.com/watch?v=Hg3nmYD3DjQ&feature=youtu.be)
+
+Address: https://github.com/Unity-Technologies/ml-agents
+
+Contain .blue[Deep Learning] & .blue[Reinforcement Learning]
+
+---
+class: left, middle, inverse
+
+# Outline
+
+* .brown[Introduction]
+
+* .brown[Machine Learning]
+
+* .brown[Deep Learning]
+
+* .brown[Reinforcement Learning]
+
+* .brown[Unity ML-Agents Toolkit]
+
+* .cyan[Genetic Algorithms]
+
+* References
+
+---
+
+https://github.com/Sebastian-Schuchmann/Genetic-Algorithm-in-Unity3D
+
+https://medium.com/@venkateshtata9/an-introduction-to-evolutionary-algorithms-and-code-part-1-theory-behind-genetic-algorithm-df75af08d5d6
+
+https://bitbucket.org/kryzarel/generic-genetic-algorithm/src/master/
+https://forum.unity.com/threads/tutorial-genetic-algorithm-c.479062/
+
+https://github.com/jonasstr/Genetic-Algorithm-TSP-Unity
+
 
 - Ús: ajust de paràmetres i de nivells
 
@@ -423,7 +915,6 @@ best fitness / lower energy
 
 2 gràfiques
 
-
 ---
 class: left, middle, inverse
 
@@ -431,40 +922,15 @@ class: left, middle, inverse
 
 * .brown[Introduction]
 
-* .brown[Naïve Bayes]
-
-* .brown[Decision Trees]
-
-* .brown[Reinforcement Learning]
-
-* .brown[Genetic Algorithms]
-
-* .cyan[Deep Learning]
-
-* References
-
----
-
-kk
-
-overfitting o teoria de l'aprenentatge
-
----
-class: left, middle, inverse
-
-# Outline
-
-* .brown[Introduction]
-
-* .brown[Naïve Bayes]
-
-* .brown[Decision Trees]
-
-* .brown[Reinforcement Learning]
-
-* .brown[Genetic Algorithms]
+* .brown[Machine Learning]
 
 * .brown[Deep Learning]
+
+* .brown[Reinforcement Learning]
+
+* .brown[Unity ML-Agents Toolkit]
+
+* .brown[Genetic Algorithms]
 
 * .cyan[References]
 
@@ -474,6 +940,18 @@ class: left, middle, inverse
 
 - Ian Millington. _AI for Games_ (3rd edition). CRC Press, 2019.
 
-- Gerard Escudero. _Supervised Machine Learning_. 2019. 
-  * [available online](https://gebakx.github.io/classification/slides/machineLearning.pdf)
+- Gerard Escudero. [_Supervised Machine Learning_](https://gebakx.github.io/classification/slides/machineLearning.pdf). 2019. 
+
+- Sefik Ilkin Serengil. [_A Step by Step CART Decision Tree Example_](https://sefiks.com/2018/08/27/a-step-by-step-cart-decision-tree-example/). 2018. It also contains a regression example.
+
+- Llibre i/o documentació de ML-Agents.
+
+- Article DeepMind.
+
+- Hands on machine learning.
+
+- Keras.
+
+- Algorismes genètics.
+
 

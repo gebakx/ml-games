@@ -73,15 +73,20 @@ public class naiveBayes : MonoBehaviour
 
     void predict()
     {
-        Func<int, float> laplace =
-            (x) => (x + 1.0f) / N;
+        Func<int, int, double> laplace =
+            (x, y) => (x + 1.0) / (y + N);
 
-        Func<string, float> probability = 
-            (cl) => laplace(Ny[cl]) *
+        Func<int, int, double> normal =
+            (x, y) => (double)x / y;
+
+        Func<int, int, double> actual = laplace;    
+
+        Func<string, double> probability = 
+            (cl) => actual(Ny[cl], N) *
             Enumerable.Range(0, features.Length).Select(
                 i => Nxiy[cl][features[i]].ContainsKey(test[i]) ? 
-                    laplace(Nxiy[cl][features[i]][test[i]]) : 
-                    laplace(0)
+                    actual(Nxiy[cl][features[i]][test[i]], Ny[cl]) : 
+                    actual(0, Ny[cl])
                 ).Aggregate(
                     (x, y) => x * y);
 
