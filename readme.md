@@ -877,43 +877,7 @@ class: left, middle, inverse
 
 ---
 
-https://github.com/Sebastian-Schuchmann/Genetic-Algorithm-in-Unity3D
-
-https://medium.com/@venkateshtata9/an-introduction-to-evolutionary-algorithms-and-code-part-1-theory-behind-genetic-algorithm-df75af08d5d6
-
-https://bitbucket.org/kryzarel/generic-genetic-algorithm/src/master/
-https://forum.unity.com/threads/tutorial-genetic-algorithm-c.479062/
-
-https://github.com/jonasstr/Genetic-Algorithm-TSP-Unity
-
-
-- Ús: ajust de paràmetres i de nivells
-
----
-
-# Parameter Modification
-
-- We have lots of magic numbers in our AI so far, remember steering ?
-
-- How we could have a process to automatically generate the best setup ?
-
-- We could train offline the AI in different setup and evaluate the results
-
-- First we need a fitness value: a heuristic on how well it performs
-
--  E.g. we randomly setup the vectors and have the AI go from A to B
-  - Fitness value could be time to target, distance taken, damage from collisions, etc.
-
-- We can have the game run several hundreds of time
-
-- This produce some statistics ...
-
-- We try to not go fully random but improve the search with inform decisions
-
-- We use a technique called hill climbing: we keep exploring what looks like the
-best fitness / lower energy
-
-2 gràfiques
+# Genetic Algorithms
 
 ---
 class: left, middle, inverse
