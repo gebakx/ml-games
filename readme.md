@@ -583,6 +583,90 @@ _white_ examples without _cap-color_
 
 # Regression
 
+- standard deviation as splitting measure
+
+$$\sigma=\sqrt{\frac{(x_1-\mu)^2+\dots+(x_n-\mu)^2}{n}}$$
+
+.center[where $\mu=\frac{x_1+\dots+x_n}{n}$]
+
+.cols5050[
+.col1[
+**example:**
+
+| target | outlook | wind   |
+|:-------|:--------|:-------|
+| 25     | sun     | weak   |
+| 30     | sun     | strong |
+| 52     | rain    | weak   |
+| 23     | rain    | strong |
+| 45     | rain    | weak   |
+.center[.small[[Source](https://sefiks.com/2018/08/28/a-step-by-step-regression-decision-tree-example/)]]
+]
+.col2[
+**total amounts:**
+
+$$\mu=35$$
+$$\sigma=11.472$$
+]]
+
+---
+
+# Regression II
+
+.cols5050[
+.col1[
+**outlook:**
+
+| outlook | $\mu$ | $\sigma$ | #examples |
+|:--------|------:|---------:|----------:|
+| sun     | 27.5  | 2.5      | 2         |
+| rain    | 40.0  | 12.356   | 3         |
+]
+.col2[
+**weighted sum:**
+
+$$\sigma_{weighted}=\frac{2}{5}\cdot 2.5+\frac{3}{5}\cdot 12.356=8.414$$
+
+**$\sigma$ reduction:**
+$$\sigma_{reduction}=11.543-8.414=3.129$$
+]]
+
+.cols5050[
+.col1[
+**wind:**
+
+| wind   | $\mu$  | $\sigma$ | #examples |
+|:-------|-------:|---------:|----------:|
+| weak   | 40.667 | 11.441   | 3         |
+| strong | 26.5   | 3.5      | 2         |
+]
+.col2[
+**weighted sum:**
+
+$$\sigma_{weighted}=\frac{3}{5}\cdot 11.441+\frac{2}{5}\cdot 3.5=8.265$$
+
+**$\sigma$ reduction:**
+$$\sigma_{reduction}=11.543-8.265=3.278$$
+]]
+
+Wins the highest score: .blue[**wind**]
+
+---
+
+# Notes on Decision Trees
+
+- Tends to overfitting when leafs with few examples
+
+- High variance
+  - small changes in training sets produce different trees
+
+- **Prunning**: for avoiding overfitting
+  - less than 5 instances 
+  - maximum depth
+
+- Previous regression tree by averaging leaf instances:
+ 
+.center[![:scale 50%](figures/dtr.png)]
 
 ---
 class: left, middle, inverse
