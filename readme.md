@@ -992,14 +992,14 @@ class: left, middle, inverse
 
 - Sefik Ilkin Serengil. [_A Step by Step CART Decision Tree Example_](https://sefiks.com/2018/08/27/a-step-by-step-cart-decision-tree-example/). 2018. It also contains a regression example.
 
-- Llibre i/o documentació de ML-Agents.
+- Aurélien Géron. _Hands-On Machine Learning with Scikit-Learn, Keras & Tensorflow_, 2nd Edition. O'Reilly, 2019.
 
-- Article DeepMind.
+- [_Keras Documentation_](https://keras.io/). 
 
-- Hands on machine learning.
+- DeepMind. [Deep Reinforcement Learning](https://deepmind.com/blog/article/deep-reinforcement-learning).
 
-- Keras.
+- Micheal Lanham. _Learn Unity ML-Agents - Fundamental of Unity Machine Learning_. Packt, 2018.
 
-- Algorismes genètics.
+- Algorismes genètics???
 
 
