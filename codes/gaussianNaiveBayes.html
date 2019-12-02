@@ -1,0 +1,247 @@
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Collections</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Collections.Generic</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">UnityEngine</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Linq</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System</span>;
+
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">gaussianNaiveBayes</span> : MonoBehaviour
+{
+    <span style="color: #888888">// data</span>
+    <span style="color: #333399; font-weight: bold">double</span>[][] x_train =
+    {
+        <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">double</span>[] {<span style="color: #6600EE; font-weight: bold">2.4</span>, <span style="color: #6600EE; font-weight: bold">11.3</span>},
+        <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">double</span>[] {<span style="color: #6600EE; font-weight: bold">3.2</span>, <span style="color: #6600EE; font-weight: bold">70.2</span>},
+        <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">double</span>[] {<span style="color: #6600EE; font-weight: bold">75.7</span>, <span style="color: #6600EE; font-weight: bold">72.7</span>},
+        <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">double</span>[] {<span style="color: #6600EE; font-weight: bold">2.8</span>, <span style="color: #6600EE; font-weight: bold">15.2</span>}
+    };
+    <span style="color: #333399; font-weight: bold">string</span>[] y_train = {<span style="background-color: #fff0f0">&quot;Y&quot;</span>, <span style="background-color: #fff0f0">&quot;Y&quot;</span>, <span style="background-color: #fff0f0">&quot;N&quot;</span>, <span style="background-color: #fff0f0">&quot;N&quot;</span>};
+
+    <span style="color: #333399; font-weight: bold">double</span>[] test = {<span style="color: #6600EE; font-weight: bold">79.2</span>, <span style="color: #6600EE; font-weight: bold">12.1</span>};
+
+    <span style="color: #333399; font-weight: bold">string</span>[] features = {<span style="background-color: #fff0f0">&quot;Distance&quot;</span>, <span style="background-color: #fff0f0">&quot;Speed&quot;</span>};
+
+    <span style="color: #888888">// model</span>
+    <span style="color: #333399; font-weight: bold">int</span> N;
+    Dictionary&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">int</span>&gt; Ny;
+    Dictionary&lt;<span style="color: #333399; font-weight: bold">string</span>, Dictionary&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">double</span>&gt;&gt; Mu, Sigma;
+
+
+    <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">Start</span>()
+    {
+        learn();
+        showModel();
+        predict();        
+    }
+
+
+    <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">learn</span>() {
+        Func&lt;List&lt;<span style="color: #333399; font-weight: bold">string</span>&gt;, Dictionary&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">int</span>&gt;&gt; getCount = 
+            (l) =&gt; l.GroupBy(
+                x =&gt; x
+                ).ToDictionary(
+                    g =&gt; g.Key, 
+                    g =&gt; g.Count()
+                    );
+
+        Func&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">int</span>, List&lt;<span style="color: #333399; font-weight: bold">double</span>&gt;&gt; filter =
+            (cl, at) =&gt; Enumerable.Range(<span style="color: #6600EE; font-weight: bold">0</span>, y_train.Length).Where(
+                i =&gt; y_train[i] == cl
+                ).Select(
+                    i =&gt; x_train[i][at]
+                    ).ToList();
+
+        N = x_train.Length;
+        Ny = <span style="color: #008800; font-weight: bold">new</span> Dictionary&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">int</span>&gt;();
+        Ny = getCount(y_train.ToList());
+
+        Mu = <span style="color: #008800; font-weight: bold">new</span> Dictionary&lt;<span style="color: #333399; font-weight: bold">string</span>, Dictionary&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">double</span>&gt;&gt;();
+        Mu = Ny.Keys.ToDictionary(
+            cl =&gt; cl,
+            cl =&gt; Enumerable.Range(<span style="color: #6600EE; font-weight: bold">0</span>, features.Length).ToDictionary(
+                i =&gt; features[i],
+                i =&gt; filter(cl, i).Average()
+            )
+        );
+
+        Sigma = <span style="color: #008800; font-weight: bold">new</span> Dictionary&lt;<span style="color: #333399; font-weight: bold">string</span>, Dictionary&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">double</span>&gt;&gt;();
+        Sigma = Ny.Keys.ToDictionary(
+            cl =&gt; cl,
+            cl =&gt; Enumerable.Range(<span style="color: #6600EE; font-weight: bold">0</span>, features.Length).ToDictionary(
+                i =&gt; features[i],
+                i =&gt; filter(cl, i).Select(x =&gt; Math.Pow(x - Mu[cl][features[i]], <span style="color: #6600EE; font-weight: bold">2</span>)).Sum() / (Ny[cl] - <span style="color: #6600EE; font-weight: bold">1</span>)
+            )
+        );
+    }
+
+    <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">predict</span>()
+    {
+        Func&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">double</span>, <span style="color: #333399; font-weight: bold">double</span>&gt; gf =
+            (cl, f, v) =&gt; Math.Exp(
+                             -Math.Pow(v - Mu[cl][f], <span style="color: #6600EE; font-weight: bold">2</span>) / <span style="color: #6600EE; font-weight: bold">2</span> / Sigma[cl][f]
+                          ) / Math.Sqrt(<span style="color: #6600EE; font-weight: bold">2</span> * Math.PI * Sigma[cl][f]);
+
+        Func&lt;<span style="color: #333399; font-weight: bold">string</span>, <span style="color: #333399; font-weight: bold">double</span>&gt; probability = 
+            (cl) =&gt; (<span style="color: #333399; font-weight: bold">double</span>)Ny[cl] / N * features.Zip(test, (f,v) =&gt; gf(cl, f, v)).Aggregate(
+                    (x, y) =&gt; x * y);
+
+        <span style="color: #333399; font-weight: bold">string</span> pred = Ny.Keys.Select(
+            cl =&gt; (probability(cl), cl)
+            ).Max().Item2;
+
+        Debug.Log(<span style="background-color: #fff0f0">&quot;class(&quot;</span> + <span style="color: #333399; font-weight: bold">string</span>.Join(<span style="background-color: #fff0f0">&quot;, &quot;</span>, test) + <span style="background-color: #fff0f0">&quot;): &quot;</span> + pred);
+    }
+
+    <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">showModel</span>() {
+        <span style="color: #333399; font-weight: bold">string</span> s = <span style="background-color: #fff0f0">&quot;Model:\n&quot;</span>;
+        s += <span style="background-color: #fff0f0">&quot;N: &quot;</span> + N.ToString() + <span style="background-color: #fff0f0">&quot;\n&quot;</span>;
+
+        s += <span style="background-color: #fff0f0">&quot;Ny:\n&quot;</span>;
+        <span style="color: #008800; font-weight: bold">foreach</span> (<span style="color: #333399; font-weight: bold">var</span> pair <span style="color: #008800; font-weight: bold">in</span> Ny)
+            s += <span style="background-color: #fff0f0">&quot;  &quot;</span> + pair.Key + <span style="background-color: #fff0f0">&quot;: &quot;</span> + pair.Value.ToString() + <span style="background-color: #fff0f0">&quot;\n&quot;</span>;
+
+        s += <span style="background-color: #fff0f0">&quot;Mu:\n&quot;</span>;
+        <span style="color: #008800; font-weight: bold">foreach</span> (<span style="color: #333399; font-weight: bold">var</span> cl <span style="color: #008800; font-weight: bold">in</span> Mu) {
+            s += <span style="background-color: #fff0f0">&quot;  &quot;</span> + cl.Key + <span style="background-color: #fff0f0">&quot;\n&quot;</span>;
+            <span style="color: #008800; font-weight: bold">foreach</span> (<span style="color: #333399; font-weight: bold">var</span> atr <span style="color: #008800; font-weight: bold">in</span> cl.Value)
+            {
+                s += <span style="background-color: #fff0f0">&quot;    &quot;</span> + atr.Key + <span style="background-color: #fff0f0">&quot;: &quot;</span> + atr.Value.ToString() + <span style="background-color: #fff0f0">&quot;\n&quot;</span>;
+            }
+        };
+
+
+        s += <span style="background-color: #fff0f0">&quot;Sigma:\n&quot;</span>;
+        <span style="color: #008800; font-weight: bold">foreach</span> (<span style="color: #333399; font-weight: bold">var</span> cl <span style="color: #008800; font-weight: bold">in</span> Sigma) {
+            s += <span style="background-color: #fff0f0">&quot;  &quot;</span> + cl.Key + <span style="background-color: #fff0f0">&quot;\n&quot;</span>;
+            <span style="color: #008800; font-weight: bold">foreach</span> (<span style="color: #333399; font-weight: bold">var</span> atr <span style="color: #008800; font-weight: bold">in</span> cl.Value)
+            {
+                s += <span style="background-color: #fff0f0">&quot;    &quot;</span> + atr.Key + <span style="background-color: #fff0f0">&quot;: &quot;</span> + atr.Value.ToString() + <span style="background-color: #fff0f0">&quot;\n&quot;</span>;
+            }
+        };
+
+        Debug.Log(s);
+    }
+}
+</pre></td></tr></table></div>
+

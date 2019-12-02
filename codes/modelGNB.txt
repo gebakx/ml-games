@@ -1,0 +1,20 @@
+Model:
+N: 4
+Ny:
+  Y: 2
+  N: 2
+Mu:
+  Y
+    Distance: 2,8
+    Speed: 40,75
+  N
+    Distance: 39,25
+    Speed: 43,95
+Sigma:
+  Y
+    Distance: 0,32
+    Speed: 1734,605
+  N
+    Distance: 2657,205
+    Speed: 1653,125
+

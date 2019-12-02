@@ -345,7 +345,7 @@ $$P(x_i|y)\approx\frac{N(x_i|y)+1}{N(y)+N}$$
 
 ---
 
-# Gaussian Naïve Bayes
+# Gaussian Naïve Bayes I
 
 * How about numerical features?
 
@@ -360,12 +360,12 @@ $$P(x_i|y)\approx\frac{N(x_i|y)+1}{N(y)+N}$$
 
 $$P(x_i|y)=\frac{1}{\sqrt{2\pi\sigma_y^2}}\exp\left(-\frac{(x_i-\mu_y)^2}{2\sigma_y^2}\right)$$
 
-.center[where $\mu_y=\frac{x_1^y+\cdots+x_n^y}{n_y}$ and $\sigma_y^2=\frac{(x_1^y - \mu_y)^2+\cdots+(x_n^y - \mu_y)^2}{n_y-1}$]
+.center[where $\mu_y=\frac{x_1^y+\cdots+x_n^y}{n_y}$ and $\sigma_y^2=\frac{(x_1^y - \mu_y)^2+\cdots+(x_n^y - \mu_y)^2}{n_y}$]
 
 
 ---
 
-# Gaussian Naïve Bayes
+# Gaussian Naïve Bayes II
 
 .col5050[
 .col1[
@@ -388,7 +388,7 @@ $$P(x_i|y)=\frac{1}{\sqrt{2\pi\sigma_y^2}}\exp\left(-\frac{(x_i-\mu_y)^2}{2\sigm
 .col2[
 **Classification:**
 
-$$P(Y|T)=0.5\cdot 0.0\cdot 0.00669 = 0.0$$
+$$P(Y|T)=0.5\cdot 0.0\cdot 0.00756 = 0.0$$
 
 $$P(N|T)=0.5\cdot 0.00573\cdot 0.00722 = 0.00002$$
 
@@ -400,6 +400,22 @@ $$P(speed=12.1|Y)=\frac{1}{\sqrt{2\cdot\pi\cdot 1734.605}}\cdot$$
 
 $$\cdot \exp\left(-\frac{(12.1-40.75)^2}{2\cdot 1734.605}\right)=0.00669$$
 ]]
+
+---
+
+# Gaussian Naïve Bayes III
+
+**Implementation:**
+
+- Using LINQ of C#: 
+
+  - [view](codes/gaussianNaiveBayes.html).red[*] 
+
+  - [output](codes/modelGNB.txt)
+
+  - [download code](codes/gaussianNaiveBayes.cs)
+
+.footnote[.red[*] Formated with http://hilite.me/]
 
 ---
 
