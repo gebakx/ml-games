@@ -917,6 +917,17 @@ Training example:
 
 ---
 
+# Reinforcement Learning Example
+
+- Simple example of Q-learning & Q-Table.
+
+.center[[![:scale 65%](figures/ooops.png)](figures/ooops.mp4)]
+
+- [Unity Package](codes/ooops.unitypackage)
+  - See the folder _Scripts_ in _Assets_
+
+---
+
 # Deep Reinforcement Learning
 
 - Convolutional Neural Network for learning $Q$ <br>
