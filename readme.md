@@ -923,7 +923,7 @@ Training example:
 
 .center[[![:scale 65%](figures/ooops.png)](figures/ooops.mp4)]
 
-- [Unity Package](codes/ooops.unitypackage)
+- [Unity Package](codes/ooops.unitypackage) (in Spanish)
   - See the folder _Scripts_ in _Assets_
 
 ---
