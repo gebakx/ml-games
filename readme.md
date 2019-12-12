@@ -1032,7 +1032,7 @@ class: left, middle, inverse
 
 - **Solution**: 
 
-  - Gind a _reasonably_ good solution in a limited time
+  - Find a _reasonably_ good solution in a limited time
 
   - .blue[Optimisation algorithms]
 
@@ -1123,5 +1123,8 @@ class: left, middle, inverse
 
 - Micheal Lanham. _Learn Unity ML-Agents - Fundamental of Unity Machine Learning_. Packt, 2018.
 
+- Károly Zsolnai-Fehér. [OpenAI Plays Hide and Seek…and Breaks The Game!](https://www.youtube.com/watch?v=Lu56xVlZ40M). Two Minute Papers.
+
+- Károly Zsolnai-Fehér. [DeepMind’s AlphaStar: A Grandmaster Level StarCraft 2 AI](https://www.youtube.com/watch?v=jtlrWblOyP4). Two Minute Papers.
 
 
