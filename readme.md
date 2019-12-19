@@ -928,13 +928,25 @@ Training example:
 
 ---
 
-# Deep Reinforcement Learning
+# Deep Reinforcement Learning I
 
 - Convolutional Neural Network for learning $Q$ <br>
 
 .center[[![:scale 65%](figures/breakout.png)](https://www.youtube.com/watch?v=TmPfTpjtdgg&feature=youtu.be)]
 
 .footnote[Source: [Deep Reinforcement Learning](https://deepmind.com/blog/article/deep-reinforcement-learning)]
+
+---
+
+# Deep Reinforcement Learning II
+
+**Example:** 
+
+- CartPole from [OpenAi Gym](https://gym.openai.com/):
+
+.center[![:scale 50%](figures/cartpole.gif)]
+
+- [Deep Q-Learning with Keras and Gym](https://keon.io/deep-q-learning/)
 
 ---
 class: left, middle, inverse
