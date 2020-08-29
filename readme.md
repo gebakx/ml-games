@@ -29,8 +29,6 @@ class: left, middle, inverse
 
 * Unity ML-Agents Toolkit
 
-* Genetic Algorithms
-
 * References
 
 ---
@@ -40,12 +38,12 @@ class: left, middle, inverse
 .center[
 class      | sepal <br> length | sepal <br> width | petal <br> length | petal <br> width 
 :--------- | -----: | ----: | -----: | ----: 
-setosa     | 5.1    | 3.5   | 1.4    | 0.2   
-setosa     | 4.9    | 3.0   | 1.4    | 0.2   
-versicolor | 6.1    | 2.9   | 4.7    | 1.4   
-versicolor | 5.6    | 2.9   | 3.6    | 1.3    
-virginica  | 7.6    | 3.0   | 6.6    | 2.1    
-virginica  | 4.9    | 2.5   | 4.5    | 1.7   
+setosa     | 5.1    | 3.5   | 1.4    | 0.2
+setosa     | 4.9    | 3.0   | 1.4    | 0.2
+versicolor | 6.1    | 2.9   | 4.7    | 1.4 
+versicolor | 5.6    | 2.9   | 3.6    | 1.3 
+virginica  | 7.6    | 3.0   | 6.6    | 2.1 
+virginica  | 4.9    | 2.5   | 4.5    | 1.7 
 150 rows or examples (50 per class).red[*] 
 ]
 
@@ -247,8 +245,6 @@ class: left, middle, inverse
 * Reinforcement Learning
 
 * Unity ML-Agents Toolkit
-
-* Genetic Algorithms
 
 * References
 
@@ -699,8 +695,6 @@ class: left, middle, inverse
 
 * Unity ML-Agents Toolkit
 
-* Genetic Algorithms
-
 * References
 
 ---
@@ -879,8 +873,6 @@ class: left, middle, inverse
 
 * Unity ML-Agents Toolkit
 
-* Genetic Algorithms
-
 * References
 
 ---
@@ -963,8 +955,6 @@ class: left, middle, inverse
 
 * .cyan[Unity ML-Agents Toolkit]
 
-* Genetic Algorithms
-
 * References
 
 ---
@@ -994,109 +984,7 @@ class: left, middle, inverse
 
 * .brown[Unity ML-Agents Toolkit]
 
-* .cyan[Genetic Algorithms]
-
 * References
-
----
-
-# Optimisation I
-
-- **Problem**: setting parameters
-
-- Example 1:
-
-    - Strategy Game with diferent kind of units
-
-    - Every unit have diferent attributes (attack, defense, life points)
- 
-    - All the units have to be useful
-
-    - We need to balance them
-
-- Example 2:
-
-    - Game difficulty level adjustment
-
-- Example 3:
-
-    - Setting parameters of a Machine Learning algorithm
-
-- Example 4:
-
-    - Learning behaviour
-
----
-
-# Optimisation II
-
-- Exemple: Strategy Game
-
-  - 10 unit types
-
-  - 3 attributes (attack, defense, life)
-
-  - 20 possible values (1..20)
-
-  - possible combinations will be $20^{3\times 10}$
-
-  - testing all combinations is impossible
-
-- **Solution**: 
-
-  - Find a _reasonably_ good solution in a limited time
-
-  - .blue[Optimisation algorithms]
-
----
-
-# Genetic Algorithm I
-
-Given a problem $P$ with a solution space $S$, the main components are:
-
-- .blue[Chromosome] (solution): collection of .blue[genes] (parameters)
-
-- .blue[Population]: collection of chromosomes
-
-- .blue[Fitness function]: scores how good is a solution
-
-- .blue[Selection]: selects best chromosomes
-
-- .blue[Crossover]: from 2 random chromosomes & a random point:
-  * requirements: $2\times n$ parents for each $n$ new chromosomes
-
-.center[![:scale 50%](figures/crossover.png)]
-
----
-
-# Genetic Algorithm II
-
-- .blue[Mutation]: change a value
-  - Probability of mutation (<10%)
-  - Random index
-  - Random number to add or substract
-
-.center[![:scale 50%](figures/mutation.png)]
-
-.cols5050[
-.col1[
-**Algorithm:**
-
-```
-1. Random Population
-2. Compute fitness
-3. Selection 
-4. Crossover
-5. Mutation
-6. Go to step 2
-```
-
-- Example: [demo](figures/maze.mp4) / [reference](https://github.com/Sebastian-Schuchmann/Genetic-Algorithm-in-Unity3D)
-]
-.col2[
-![:scale 75%](figures/ga-plot.png)
-]]
-
 
 ---
 class: left, middle, inverse
@@ -1112,8 +1000,6 @@ class: left, middle, inverse
 * .brown[Reinforcement Learning]
 
 * .brown[Unity ML-Agents Toolkit]
-
-* .brown[Genetic Algorithms]
 
 * .cyan[References]
 
