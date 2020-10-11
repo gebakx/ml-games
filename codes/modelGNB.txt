@@ -18,3 +18,4 @@ Sigma:
     Distance: 2657,205
     Speed: 1653,125
 
+class(79,2, 12,1): N

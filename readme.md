@@ -405,11 +405,17 @@ $$\cdot \exp\left(-\frac{(12.1-40.75)^2}{2\cdot 1734.605}\right)=0.00669$$
 
 - Using LINQ of C#: 
 
-  - [view](codes/gaussianNaiveBayes.html).red[*] 
+  - [view](codes/gaussianNaiveBayes.html).red[*] / [output](codes/modelGNB.txt) / [download code](codes/gaussianNaiveBayes.cs)
 
-  - [output](codes/modelGNB.txt)
+- Using [sklearn](https://scikit-learn.org/stable/index.html) and [python](https://www.python.org/) in [colab](https://colab.research.google.com):
 
-  - [download code](codes/gaussianNaiveBayes.cs)
+  - [view](codes/gnb.html) / [download](codes/gnb.ipynb)
+
+- Using sklearn and Unity
+
+  - sklearn: [view](codes/gnbjson.html) / [download](codes/gnbjson.ipynb) / [data](codes/tir.txt)
+
+  - Unity: [view](codes/gnbjson2.html).red[*] / [download](codes/gnbjson.cs) / [model](codes/tir.json)
 
 .footnote[.red[*] Formated with http://hilite.me/]
 
@@ -547,9 +553,12 @@ _white_ examples without _cap-color_
 **Resulting Tree:**
 
 .center[
-![:scale 75%](figures/dt.png)
+![:scale 55%](figures/dt.png)
 ]
 
+### [chefboost](https://github.com/serengil/chefboost)
+
+- [view](codes/dt1.html) / [download](codes/dt1.ipynb)
 
 ---
 
@@ -585,11 +594,20 @@ _white_ examples without _cap-color_
 | < 2.7 | 0 | 1 | 1 | $1-(\frac{0}{1})^2-(\frac{1}{1})^2=0$ |
 | > 2.7 | 2 | 1 | 3 | $1-(\frac{2}{3})^2-(\frac{1}{3})^2=0.45$ |
 
+.cols5050[
+.col1[
 **Resulting Tree:**
 
 .center[
-![:scale 50%](figures/dt-ct.png)
+![:scale 80%](figures/dt-ct.png)
 ]
+]
+.col2[
+### [chefboost](https://github.com/serengil/chefboost)
+
+- [view](codes/dt2.html) / [download](codes/dt2.ipynb)
+
+]]
 
 ---
 
@@ -677,8 +695,17 @@ Wins the highest score: .blue[**wind**]
   - maximum depth
 
 - Previous regression tree by averaging leaf instances:
- 
-.center[![:scale 50%](figures/dtr.png)]
+
+.cols5050[
+.col1[ 
+.center[![:scale 80%](figures/dtr.png)]
+]
+.col2[
+### [chefboost](https://github.com/serengil/chefboost)
+
+- [view](codes/dt3.html) / [download](codes/dt3.ipynb)
+
+]]
 
 ---
 class: left, middle, inverse
@@ -969,22 +996,6 @@ Address: https://github.com/Unity-Technologies/ml-agents
 
 Contain .blue[Deep Learning] & .blue[Reinforcement Learning]
 
----
-class: left, middle, inverse
-
-# Outline
-
-* .brown[Introduction]
-
-* .brown[Machine Learning]
-
-* .brown[Deep Learning]
-
-* .brown[Reinforcement Learning]
-
-* .brown[Unity ML-Agents Toolkit]
-
-* References
 
 ---
 class: left, middle, inverse
@@ -1011,7 +1022,7 @@ class: left, middle, inverse
 
 - Gerard Escudero. [_Supervised Machine Learning_](https://gebakx.github.io/classification/slides/machineLearning.pdf). 2019. 
 
-- Sefik Ilkin Serengil. [_A Step by Step CART Decision Tree Example_](https://sefiks.com/2018/08/27/a-step-by-step-cart-decision-tree-example/). 2018. It also contains a regression example.
+- Sefik Ilkin Serengil. [chefboost](https://github.com/serengil/chefboost) (2019): [_A Step by Step CART Decision Tree Example_](https://sefiks.com/2018/08/27/a-step-by-step-cart-decision-tree-example/) (2018). 
 
 - Aurélien Géron. _Hands-On Machine Learning with Scikit-Learn, Keras & Tensorflow_, 2nd Edition. O'Reilly, 2019.
 

@@ -1,0 +1,45 @@
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Collections</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Collections.Generic</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">UnityEngine</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">SimpleJSON</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.IO</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Linq</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System</span>;
+
+<span style="color: #888888">// requirement: http://wiki.unity3d.com/index.php/SimpleJSON</span>
+
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">gnbjson</span> : MonoBehaviour
+{
+    <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">Start</span>()
+    {
+        <span style="color: #333399; font-weight: bold">string</span> path = <span style="background-color: #fff0f0">&quot;Assets/Resources/tir.json&quot;</span>;
+        StreamReader reader = <span style="color: #008800; font-weight: bold">new</span> StreamReader(path); 
+        <span style="color: #333399; font-weight: bold">var</span> model = JSON.Parse(reader.ReadToEnd());
+        reader.Close();        
+
+        <span style="color: #333399; font-weight: bold">int</span>[] test1 = {<span style="color: #6600EE; font-weight: bold">14</span>,<span style="color: #6600EE; font-weight: bold">2</span>,<span style="color: #6600EE; font-weight: bold">18</span>};
+        predict(test1, model);
+        <span style="color: #333399; font-weight: bold">int</span>[] test2 = {<span style="color: #6600EE; font-weight: bold">20</span>,<span style="color: #6600EE; font-weight: bold">4</span>,<span style="color: #6600EE; font-weight: bold">11</span>};
+        predict(test2, model);
+    }
+
+    <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">predict</span>(<span style="color: #333399; font-weight: bold">int</span>[] test, JSONNode model)
+    {
+       Func&lt;<span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">double</span>&gt; probFeat = 
+            (cl, f) =&gt; Math.Exp(-Math.Pow(test[f]-model[<span style="background-color: #fff0f0">&quot;theta&quot;</span>][cl][f], <span style="color: #6600EE; font-weight: bold">2</span>)/(<span style="color: #6600EE; font-weight: bold">2</span>*model[<span style="background-color: #fff0f0">&quot;sigma&quot;</span>][cl][f])) /
+                        Math.Sqrt(<span style="color: #6600EE; font-weight: bold">2</span> * Math.PI * model[<span style="background-color: #fff0f0">&quot;sigma&quot;</span>][cl][f]);
+        Func&lt;<span style="color: #333399; font-weight: bold">int</span>, <span style="color: #333399; font-weight: bold">double</span>&gt; prob = 
+            cl =&gt; model[<span style="background-color: #fff0f0">&quot;class_prior&quot;</span>][cl] * Enumerable.Range(<span style="color: #6600EE; font-weight: bold">0</span>,test.Length).Select(
+                f =&gt; probFeat(cl, f)
+                ).Aggregate(
+                    (x, y) =&gt; x * y);
+
+        <span style="color: #333399; font-weight: bold">var</span> pred = Enumerable.Range(<span style="color: #6600EE; font-weight: bold">0</span>,model[<span style="background-color: #fff0f0">&quot;classes&quot;</span>].Count).Select(
+            cl =&gt; (prob(cl), model[<span style="background-color: #fff0f0">&quot;classes&quot;</span>][cl])
+            ).Max().Item2;
+        Debug.Log(pred);
+    }
+
+}
+</pre></div>
+
