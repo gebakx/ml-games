@@ -27,8 +27,6 @@ class: left, middle, inverse
 
 * Reinforcement Learning
 
-* Unity ML-Agents Toolkit
-
 * References
 
 ---
@@ -240,11 +238,13 @@ class: left, middle, inverse
 
 * .cyan[Machine Learning]
 
+  - .cyan[Naïve Bayes]
+
+  - Decision Trees
+
 * Deep Learning
 
 * Reinforcement Learning
-
-* Unity ML-Agents Toolkit
 
 * References
 
@@ -418,6 +418,26 @@ $$\cdot \exp\left(-\frac{(12.1-40.75)^2}{2\cdot 1734.605}\right)=0.00669$$
   - Unity: [view](codes/gnbjson2.html).red[*] / [download](codes/gnbjson.cs) / [model](codes/tir.json)
 
 .footnote[.red[*] Formated with http://hilite.me/]
+
+
+---
+class: left, middle, inverse
+
+# Outline
+
+* .brown[Introduction]
+
+* .cyan[Machine Learning]
+
+  - .brown[Naïve Bayes]
+
+  - .cyan[Decision Trees]
+
+* Deep Learning
+
+* Reinforcement Learning
+
+* References
 
 ---
 
@@ -705,6 +725,10 @@ Wins the highest score: .blue[**wind**]
 
 - [view](codes/dt3.html) / [download](codes/dt3.ipynb)
 
+### sklearn (Projectile Motion)
+
+- [view](codes/tir.html) / [download](codes/tir.ipynb)
+
 ]]
 
 ---
@@ -718,9 +742,13 @@ class: left, middle, inverse
 
 * .cyan[Deep Learning]
 
-* Reinforcement Learning
+  - .cyan[Neural Networks]
 
-* Unity ML-Agents Toolkit
+  - Bias & Variance
+
+  - DL Architectures
+
+* Reinforcement Learning
 
 * References
 
@@ -766,39 +794,59 @@ $$w_i'=w_i+\eta(h(x)-y)$$
 
 # Multi-layer Perceptron
 
-.col5050[
-.col1[- One hidden layer
+.cols5050[
+.col1[
+- One hidden layer
 
 - Non-linear model
 
-- Classification & regression
+- .blue[Classification & regression]
 
-- [Backpropagation](https://en.wikipedia.org/wiki/Backpropagation) as training algorithm
+- .blue[Backpropagation]: <br>
+Gradient descent: $W$ <br>
+Loss function: $error(h(x),y)$
 
-- Example in sklearn:
-  - [view](codes/nn-sklearn.html) / [download](codes/nn-sklearn.ipynb) / [reference](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier)
-
-- Main parameters:
-  - hidden_layer_sizes
-  - activation
-  - max_iter
-
+.center[![:scale 90%](figures/GradientDescent.png)]
+.center[[source](http://tuxar.uk/brief-introduction-artificial-neural-networks/)]
 ]
 .col2[
-![:scale 110%](figures/mlp.png)
+.center[![:scale 80%](figures/mlp.png)]
+.center[[source](https://en.wikipedia.org/wiki/Artificial_neural_network)]
 ]]
-
-.footnote[Source: [wikipedia](https://en.wikipedia.org/wiki/Artificial_neural_network)]
 
 ---
 
-# Bias, Variance & Overfitting
+# Examples
 
-![](figures/bias.png)![](figures/early-stopping.png)
+.blue[Splitting positives and negatives:]
 
-Normal use of a validation set to select parameters & avoid overfitting (to much learning)!
+.cols5050[
+.col1[
+![:scale 95%](figures/simpleNN.png)
+]
+.col2[
+[Excel](codes/posNegNN.xlsx)
 
-.footnote[Source: [left](https://towardsdatascience.com/regularization-the-path-to-bias-variance-trade-off-b7a7088b4577), [right](https://elitedatascience.com/overfitting-in-machine-learning)]
+[Unity](codes/NNs.html) / [C#](codes/NNs.cs)
+]]
+
+.blue[sklearn on Iris:]
+
+- [view](codes/nn-sklearn.html) / [download](codes/nn-sklearn.ipynb) 
+
+---
+
+# Example on Unity
+
+.center[
+![:scale 90%](figures/cars.gif)
+[Building a neural network framework in C#](https://towardsdatascience.com/building-a-neural-network-framework-in-c-16ef56ce1fef)
+]
+
+[BackPropNetwork](https://github.com/kipgparker/BackPropNetwork)
+- Unity Project in Github
+- Backpropagation implementation
+
 
 ---
 
@@ -806,24 +854,119 @@ Normal use of a validation set to select parameters & avoid overfitting (to much
 
 - Neural network with 2 or more hidden layers
 
+.center[
 ![](figures/chart-1.png)
 
-.cols5050[
-.col1[
 ![](figures/chart-2.png)
-]
-.col1[
-**Examples:**
-
-- Sklearn on Iris
-  - [view](codes/nn-sklearn.html) / [download](codes/nn-sklearn.ipynb)
-
-- Keras on MNIST
-  - [view](codes/keras-mlp.html) / [download](codes/keras-mlp.ipynb) / [Source](https://github.com/keras-team/keras)
-]
 ]
 
 .footnote[Source: [The Neural Network Zoo](https://www.asimovinstitute.org/neural-network-zoo/)]
+
+---
+
+# Keras 
+
+*Deep Learning high level library.*
+
+.blue[Example] on MNIST:
+
+  - [view](codes/keras-mlp.html) / [download](codes/keras-mlp.ipynb) / [Source](https://github.com/keras-team/keras)
+
+Usual .blue[Parameters]:
+
+| Task       | Loss function | Output Layer |
+|:-----------|:--------------|:-------------|
+| Bin. class | binary cross entropy | single unit, sigmoid activation |
+| Multiclass | categorical cross entropy | one unit per class, softmax activation |
+| Regression | MSE or RMSE | single unit, linear activation |
+
+- Epochs: times all examples are trained
+- Batch size: examples at each iteration
+- Optimizer: gradient descent variants (AdaGrad, RMSProp, *Adam*)
+
+[_Keras Documentation_](https://keras.io/)
+
+---
+class: left, middle, inverse
+
+# Outline
+
+* .brown[Introduction]
+
+* .brown[Machine Learning]
+
+* .cyan[Deep Learning]
+
+  - .brown[Neural Networks]
+
+  - .cyan[Bias & Variance]
+
+  - DL Architectures
+
+* Reinforcement Learning
+
+* References
+
+---
+
+# Underfitting & Overfitting
+
+.center[
+![:scale 95%](figures/overfitting.png)
+[source](https://tomrobertshaw.net/2015/12/introduction-to-machine-learning-with-naive-bayes/)
+]
+
+.cols5050[
+.col1[
+.blue[Underfitting](bias)
+
+- Symptoms:
+  - high training error
+- Causes
+  - model too simple
+  - not enough training
+]
+.col2[
+.blue[Overfitting](variance)
+- Symptoms:
+  - low training error
+  - higher validation error
+- Causes
+  - model too complex
+  - too much training
+  - training set too small
+]]
+
+---
+
+# Bias & Variance 
+
+![](figures/bias.png)![](figures/early-stopping.png)
+
+Normal use of a validation set to select parameters & avoid overfitting!
+
+.footnote[Source: [left](https://towardsdatascience.com/regularization-the-path-to-bias-variance-trade-off-b7a7088b4577), [right](https://elitedatascience.com/overfitting-in-machine-learning)]
+
+---
+class: left, middle, inverse
+
+# Outline
+
+* .brown[Introduction]
+
+* .brown[Machine Learning]
+
+* .cyan[Deep Learning]
+
+  - .brown[Neural Networks]
+
+  - .brown[Bias & Variance]
+
+  - .cyan[DL Architectures]
+
+* Reinforcement Learning
+
+* References
 
 ---
 
@@ -831,7 +974,7 @@ Normal use of a validation set to select parameters & avoid overfitting (to much
 
 **from Computer Vision**
 
-to process image & video
+to process image & video: .blue[invariant to translation & scale]
 
 ![:scale 90%](figures/cnn2.png)
 
@@ -844,10 +987,12 @@ to process image & video
 .cols5050[
 .col1[
 - Convolution: extract the high-level features such as edges
+  - Learns the patterns
 
 - Pooling: reduce dimensionality for 
+  - max (edges) or average (photo)
   - computational cost
-  - extracting dominant features which are rotational and positional invariant
+  - dominant features (rotational and positional invariant)
 
 - Example:
   - Keras on MNIST
@@ -898,7 +1043,9 @@ class: left, middle, inverse
 
 * .cyan[Reinforcement Learning]
 
-* Unity ML-Agents Toolkit
+  - .cyan[Q-Learning]
+
+  - RL Platforms
 
 * References
 
@@ -926,7 +1073,7 @@ Learning a reward function $Q: S \times A \to \mathbb{R}$ for maximizing the tot
 
 ---
 
-# Reinforcement Learning II
+# Q-table
 
 Training example:
 
@@ -936,7 +1083,7 @@ Training example:
 
 ---
 
-# Reinforcement Learning Example
+# Q-learning Example
 
 - Simple example of Q-learning & Q-Table.
 
@@ -947,25 +1094,13 @@ Training example:
 
 ---
 
-# Deep Reinforcement Learning I
+# Deep Reinforcement Learning
 
 - Convolutional Neural Network for learning $Q$ <br>
 
 .center[[![:scale 65%](figures/breakout.png)](https://www.youtube.com/watch?v=TmPfTpjtdgg&feature=youtu.be)]
 
 .footnote[Source: [Deep Reinforcement Learning](https://deepmind.com/blog/article/deep-reinforcement-learning)]
-
----
-
-# Deep Reinforcement Learning II
-
-**Example:** 
-
-- CartPole from [OpenAi Gym](https://gym.openai.com/):
-
-.center[![:scale 50%](figures/cartpole.gif)]
-
-- [Deep Q-Learning with Keras and Gym](https://keon.io/deep-q-learning/)
 
 ---
 class: left, middle, inverse
@@ -978,11 +1113,25 @@ class: left, middle, inverse
 
 * .brown[Deep Learning]
 
-* .brown[Reinforcement Learning]
+* .cyan[Reinforcement Learning]
 
-* .cyan[Unity ML-Agents Toolkit]
+  - .brown[Q-Learning]
+
+  - .cyan[RL Platforms]
 
 * References
+
+---
+
+# OpenAI Gym
+
+**Example:** 
+
+- CartPole from [OpenAi Gym](https://gym.openai.com/):
+
+.center[![:scale 50%](figures/cartpole.gif)]
+
+- [Deep Q-Learning with Keras and Gym](https://keon.io/deep-q-learning/)
 
 ---
 
@@ -1010,21 +1159,19 @@ class: left, middle, inverse
 
 * .brown[Reinforcement Learning]
 
-* .brown[Unity ML-Agents Toolkit]
-
 * .cyan[References]
 
 ---
 
 # References
 
-- Ian Millington. _AI for Games_ (3rd edition). CRC Press, 2019.
+- Gerard Escudero. [_Supervised Machine Learning_](https://gebakx.github.io/ml/). 2020. 
 
-- Gerard Escudero. [_Supervised Machine Learning_](https://gebakx.github.io/classification/slides/machineLearning.pdf). 2019. 
+- Aurélien Géron. _Hands-On Machine Learning with Scikit-Learn, Keras & Tensorflow_, 2nd Edition. O'Reilly, 2019.
 
 - Sefik Ilkin Serengil. [chefboost](https://github.com/serengil/chefboost) (2019): [_A Step by Step CART Decision Tree Example_](https://sefiks.com/2018/08/27/a-step-by-step-cart-decision-tree-example/) (2018). 
 
-- Aurélien Géron. _Hands-On Machine Learning with Scikit-Learn, Keras & Tensorflow_, 2nd Edition. O'Reilly, 2019.
+- Ian Millington. _AI for Games_ (3rd edition). CRC Press, 2019.
 
 - [_Keras Documentation_](https://keras.io/). 
 

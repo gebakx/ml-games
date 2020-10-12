@@ -1,0 +1,65 @@
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">UnityEngine</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Linq</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System.Collections.Generic</span>;
+
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Neuron</span>
+{
+    <span style="color: #333399; font-weight: bold">float</span> bias;
+    <span style="color: #333399; font-weight: bold">float</span>[] weights;
+    Func&lt;<span style="color: #333399; font-weight: bold">float</span>, <span style="color: #333399; font-weight: bold">float</span>&gt; activation;
+
+    <span style="color: #008800; font-weight: bold">public</span> <span style="color: #0066BB; font-weight: bold">Neuron</span>(<span style="color: #333399; font-weight: bold">float</span> b, <span style="color: #333399; font-weight: bold">float</span>[] w, Func&lt;<span style="color: #333399; font-weight: bold">float</span>,<span style="color: #333399; font-weight: bold">float</span>&gt; f)
+    {
+        bias = b;
+        weights = w;
+        activation = f;
+    }
+
+    <span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">float</span> <span style="color: #0066BB; font-weight: bold">propagate</span>(<span style="color: #333399; font-weight: bold">float</span>[] inputs)
+    {
+        <span style="color: #008800; font-weight: bold">return</span> <span style="color: #0066BB; font-weight: bold">activation</span>(bias + weights.Zip(inputs, (x, y) =&gt; x * y).Aggregate((x, y) =&gt; x + y));
+    }
+}
+
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">MLP</span>
+{
+    List&lt;List&lt;Neuron&gt;&gt; network;
+    
+    <span style="color: #008800; font-weight: bold">public</span> <span style="color: #0066BB; font-weight: bold">MLP</span>()
+    {
+        network = <span style="color: #008800; font-weight: bold">new</span> List&lt;List&lt;Neuron&gt;&gt;();
+    }
+
+    <span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">addLayer</span>(List&lt;Neuron&gt; l)
+    {
+        network.Add(l);
+    }
+
+    <span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">float</span> <span style="color: #0066BB; font-weight: bold">propagate</span>(<span style="color: #333399; font-weight: bold">float</span>[] inputs)
+    {
+        <span style="color: #008800; font-weight: bold">return</span> Mathf.Round(network.Aggregate(inputs, (i, l) =&gt; l.Select(n =&gt; n.propagate(i)).ToArray())[<span style="color: #6600EE; font-weight: bold">0</span>]);
+    }
+}
+
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">NNs</span> : MonoBehaviour
+{
+    <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">Start</span>()
+    {
+        Func&lt;<span style="color: #333399; font-weight: bold">float</span>,<span style="color: #333399; font-weight: bold">float</span>&gt; relu = x =&gt; Mathf.Max(<span style="color: #6600EE; font-weight: bold">0f</span>, x);
+        Func&lt;<span style="color: #333399; font-weight: bold">float</span>,<span style="color: #333399; font-weight: bold">float</span>&gt; sigm = x =&gt; <span style="color: #6600EE; font-weight: bold">1</span> / (<span style="color: #6600EE; font-weight: bold">1</span> + Mathf.Exp(-x));
+
+        MLP clf = <span style="color: #008800; font-weight: bold">new</span> MLP();
+        List&lt;Neuron&gt; nl = <span style="color: #008800; font-weight: bold">new</span> List&lt;Neuron&gt;();
+        nl.Add(<span style="color: #008800; font-weight: bold">new</span> Neuron(<span style="color: #6600EE; font-weight: bold">0.9916f</span>, <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">float</span>[] {-<span style="color: #6600EE; font-weight: bold">2.9073f</span>, -<span style="color: #6600EE; font-weight: bold">0.2868f</span>}, relu));
+        nl.Add(<span style="color: #008800; font-weight: bold">new</span> Neuron(<span style="color: #6600EE; font-weight: bold">0.3341f</span>, <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">float</span>[] {<span style="color: #6600EE; font-weight: bold">0.6037f</span>, -<span style="color: #6600EE; font-weight: bold">0.9359f</span>}, relu));
+        clf.addLayer(nl);
+        nl = <span style="color: #008800; font-weight: bold">new</span> List&lt;Neuron&gt;();
+        nl.Add(<span style="color: #008800; font-weight: bold">new</span> Neuron(<span style="color: #6600EE; font-weight: bold">1.2597f</span>, <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">float</span>[] {-<span style="color: #6600EE; font-weight: bold">1.9851f</span>, <span style="color: #6600EE; font-weight: bold">1.3447f</span>}, sigm));
+        clf.addLayer(nl);
+        
+        Debug.Log(clf.propagate(<span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">float</span>[] {-<span style="color: #6600EE; font-weight: bold">0.6f</span>, <span style="color: #6600EE; font-weight: bold">0.3f</span>})); 
+    }
+}
+</pre></div>
+
