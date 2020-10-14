@@ -1183,4 +1183,5 @@ class: left, middle, inverse
 
 - Károly Zsolnai-Fehér. [DeepMind’s AlphaStar: A Grandmaster Level StarCraft 2 AI](https://www.youtube.com/watch?v=jtlrWblOyP4). Two Minute Papers.
 
+- Siraj Raval. [How to Make an Amazing Video Game Bot Easily](https://www.youtube.com/watch?v=mGYU5t8MO7s&t=313s), 2016.
 
