@@ -1202,6 +1202,58 @@ Address: https://github.com/Unity-Technologies/ml-agents
 
 Contain .blue[Deep Learning] & .blue[Reinforcement Learning]
 
+---
+
+# ML-Agents: Hummingbirds
+
+Unity Learn [course](https://learn.unity.com/course/ml-agents-hummingbirds) by Adam Kelly.
+
+.center[
+![:scale 70%](figures/hummingbird.webp)<br>
+[source](https://learn.unity.com/course/ml-agents-hummingbirds)
+]
+
+- Intelligent hummingbirds:<br>
+Navigate to flowers, dip their beaks in, and drink nectar.
+
+- Reinforcement Learning with Unity ML-Agents.
+
+---
+
+# Hummingbirds: Observations
+
+.cols5050[
+.col1[
+- The agent's current rotation
+
+- The direction to the nearest flower
+
+- The distance to the nearest flower
+
+- How close the agent's beak is to pointing at the flower
+]
+.col2[
+![:scale 90%](figures/hbColliders.png)
+]]
+- How close the agent's beak is to being in front of the flower
+
+- Several raycasts that act like LIDAR so that the agent can avoid obstacles
+
+.footnote[[source](https://learn.unity.com/course/ml-agents-hummingbirds)]
+
+---
+
+# Hummingbirds: Rewards
+
+- A small positive reward each timestep if tehe bird's beak is touching the nectar
+
+- A large negative reward or hitting the ground or boundaries of the training area
+
+.center[
+![:scale 80%](figures/rewards.png)
+]
+
+.footnote[[source](https://learn.unity.com/course/ml-agents-hummingbirds)]
 
 ---
 class: left, middle, inverse
