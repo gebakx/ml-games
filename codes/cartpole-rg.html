@@ -1,0 +1,105 @@
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #888888">##</span>
+<span style="color: #888888">## cartpole.py</span>
+<span style="color: #888888">## Gaetan JUVIN 06/24/2017</span>
+<span style="color: #888888">##</span>
+
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">gym</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">random</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">numpy</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">np</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">collections</span>      <span style="color: #008800; font-weight: bold">import</span> deque
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">tensorflow.keras.models</span>     <span style="color: #008800; font-weight: bold">import</span> Sequential
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">tensorflow.keras.layers</span>     <span style="color: #008800; font-weight: bold">import</span> Dense
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">tensorflow.keras.optimizers</span> <span style="color: #008800; font-weight: bold">import</span> Adam
+
+<span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Agent</span>():
+    <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">__init__</span>(<span style="color: #007020">self</span>, state_size, action_size):
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>weight_backup      <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;cartpole_rg.h5&quot;</span>
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>state_size         <span style="color: #333333">=</span> state_size
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>action_size        <span style="color: #333333">=</span> action_size
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>memory             <span style="color: #333333">=</span> deque(maxlen<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">2000</span>)
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>learning_rate      <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.001</span>
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>gamma              <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.95</span>
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_rate   <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">1.0</span>
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_min    <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.01</span>
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_decay  <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.995</span>
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>brain              <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>_build_model()
+
+    <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">_build_model</span>(<span style="color: #007020">self</span>):
+        <span style="color: #888888"># Neural Net for Deep-Q learning Model</span>
+        model <span style="color: #333333">=</span> Sequential()
+        model<span style="color: #333333">.</span>add(Dense(<span style="color: #0000DD; font-weight: bold">24</span>, input_dim<span style="color: #333333">=</span><span style="color: #007020">self</span><span style="color: #333333">.</span>state_size, activation<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;relu&#39;</span>))
+        model<span style="color: #333333">.</span>add(Dense(<span style="color: #0000DD; font-weight: bold">24</span>, activation<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;relu&#39;</span>))
+        model<span style="color: #333333">.</span>add(Dense(<span style="color: #007020">self</span><span style="color: #333333">.</span>action_size, activation<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;linear&#39;</span>))
+        model<span style="color: #333333">.</span>compile(loss<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;mse&#39;</span>, optimizer<span style="color: #333333">=</span>Adam(lr<span style="color: #333333">=</span><span style="color: #007020">self</span><span style="color: #333333">.</span>learning_rate))
+
+        <span style="color: #008800; font-weight: bold">if</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>isfile(<span style="color: #007020">self</span><span style="color: #333333">.</span>weight_backup):
+            model<span style="color: #333333">.</span>load_weights(<span style="color: #007020">self</span><span style="color: #333333">.</span>weight_backup)
+            <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_rate <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_min
+        <span style="color: #008800; font-weight: bold">return</span> model
+
+    <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">save_model</span>(<span style="color: #007020">self</span>):
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>brain<span style="color: #333333">.</span>save(<span style="color: #007020">self</span><span style="color: #333333">.</span>weight_backup)
+
+    <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">act</span>(<span style="color: #007020">self</span>, state):
+        <span style="color: #008800; font-weight: bold">if</span> np<span style="color: #333333">.</span>random<span style="color: #333333">.</span>rand() <span style="color: #333333">&lt;=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_rate:
+            <span style="color: #008800; font-weight: bold">return</span> random<span style="color: #333333">.</span>randrange(<span style="color: #007020">self</span><span style="color: #333333">.</span>action_size)
+        act_values <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>brain<span style="color: #333333">.</span>predict(state)
+        <span style="color: #008800; font-weight: bold">return</span> np<span style="color: #333333">.</span>argmax(act_values[<span style="color: #0000DD; font-weight: bold">0</span>])
+
+    <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">remember</span>(<span style="color: #007020">self</span>, state, action, reward, next_state, done):
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>memory<span style="color: #333333">.</span>append((state, action, reward, next_state, done))
+
+    <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">replay</span>(<span style="color: #007020">self</span>, sample_batch_size):
+        <span style="color: #008800; font-weight: bold">if</span> <span style="color: #007020">len</span>(<span style="color: #007020">self</span><span style="color: #333333">.</span>memory) <span style="color: #333333">&lt;</span> sample_batch_size:
+            <span style="color: #008800; font-weight: bold">return</span>
+        sample_batch <span style="color: #333333">=</span> random<span style="color: #333333">.</span>sample(<span style="color: #007020">self</span><span style="color: #333333">.</span>memory, sample_batch_size)
+        <span style="color: #008800; font-weight: bold">for</span> state, action, reward, next_state, done <span style="color: #000000; font-weight: bold">in</span> sample_batch:
+            target <span style="color: #333333">=</span> reward
+            <span style="color: #008800; font-weight: bold">if</span> <span style="color: #000000; font-weight: bold">not</span> done:
+              target <span style="color: #333333">=</span> reward <span style="color: #333333">+</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>gamma <span style="color: #333333">*</span> np<span style="color: #333333">.</span>amax(<span style="color: #007020">self</span><span style="color: #333333">.</span>brain<span style="color: #333333">.</span>predict(next_state)[<span style="color: #0000DD; font-weight: bold">0</span>])
+            target_f <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>brain<span style="color: #333333">.</span>predict(state)
+            target_f[<span style="color: #0000DD; font-weight: bold">0</span>][action] <span style="color: #333333">=</span> target
+            <span style="color: #007020">self</span><span style="color: #333333">.</span>brain<span style="color: #333333">.</span>fit(state, target_f, epochs<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">1</span>, verbose<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">0</span>)
+        <span style="color: #008800; font-weight: bold">if</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_rate <span style="color: #333333">&gt;</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_min:
+            <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_rate <span style="color: #333333">*=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>exploration_decay
+
+<span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">CartPole</span>:
+    <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">__init__</span>(<span style="color: #007020">self</span>):
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>sample_batch_size <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">32</span>
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>episodes          <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">5000</span>
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>env               <span style="color: #333333">=</span> gym<span style="color: #333333">.</span>make(<span style="background-color: #fff0f0">&#39;CartPole-v1&#39;</span>)
+
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>state_size        <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>env<span style="color: #333333">.</span>observation_space<span style="color: #333333">.</span>shape[<span style="color: #0000DD; font-weight: bold">0</span>]
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>action_size       <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>env<span style="color: #333333">.</span>action_space<span style="color: #333333">.</span>n
+        <span style="color: #007020">self</span><span style="color: #333333">.</span>agent             <span style="color: #333333">=</span> Agent(<span style="color: #007020">self</span><span style="color: #333333">.</span>state_size, <span style="color: #007020">self</span><span style="color: #333333">.</span>action_size)
+
+
+    <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">run</span>(<span style="color: #007020">self</span>):
+        <span style="color: #008800; font-weight: bold">try</span>:
+            <span style="color: #008800; font-weight: bold">for</span> index_episode <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(<span style="color: #007020">self</span><span style="color: #333333">.</span>episodes):
+                state <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>env<span style="color: #333333">.</span>reset()
+                state <span style="color: #333333">=</span> np<span style="color: #333333">.</span>reshape(state, [<span style="color: #0000DD; font-weight: bold">1</span>, <span style="color: #007020">self</span><span style="color: #333333">.</span>state_size])
+
+                done <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                index <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+
+                <span style="color: #008800; font-weight: bold">while</span> <span style="color: #000000; font-weight: bold">not</span> done:
+<span style="color: #888888">#                    self.env.render()</span>
+                    action <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>agent<span style="color: #333333">.</span>act(state)
+
+                    next_state, reward, done, _ <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>env<span style="color: #333333">.</span>step(action)
+                    next_state <span style="color: #333333">=</span> np<span style="color: #333333">.</span>reshape(next_state, [<span style="color: #0000DD; font-weight: bold">1</span>, <span style="color: #007020">self</span><span style="color: #333333">.</span>state_size])
+                    <span style="color: #007020">self</span><span style="color: #333333">.</span>agent<span style="color: #333333">.</span>remember(state, action, reward, next_state, done)
+                    state <span style="color: #333333">=</span> next_state
+                    index <span style="color: #333333">+=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+                <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;Episode {}# Score: {}&quot;</span><span style="color: #333333">.</span>format(index_episode, index <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span>))
+                <span style="color: #007020">self</span><span style="color: #333333">.</span>agent<span style="color: #333333">.</span>replay(<span style="color: #007020">self</span><span style="color: #333333">.</span>sample_batch_size)
+        <span style="color: #008800; font-weight: bold">finally</span>:
+            <span style="color: #007020">self</span><span style="color: #333333">.</span>agent<span style="color: #333333">.</span>save_model()
+
+<span style="color: #008800; font-weight: bold">if</span> __name__ <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;__main__&quot;</span>:
+    cartpole <span style="color: #333333">=</span> CartPole()
+    cartpole<span style="color: #333333">.</span>run()
+</pre></div>
+

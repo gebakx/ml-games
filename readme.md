@@ -1031,6 +1031,51 @@ to process image & video: .blue[invariant to translation & scale]
 .footnote[Source: [The Neural Network Zoo](https://www.asimovinstitute.org/neural-network-zoo/)]
 
 ---
+
+# Open Neural Network eXchange
+
+[ONNX](https://onnx.ai/) is an open format built to represent machine learning models. 
+
+.cols5050[
+.col1[
+.blue[Resources]:
+
+- [Github](https://github.com/onnx/onnx)
+
+- [keras2onnx](https://github.com/onnx/keras-onnx)
+
+  - Model converter
+
+- [Pre-trained ONNX models](https://github.com/onnx/models)
+  
+  - Vision
+
+  - Language
+
+  - Speech
+
+  - Time Series
+]
+.col2[
+### Barracuda:
+
+*Lightweight Unity package for neural network inference.* 
+
+- [Documentation](https://docs.unity3d.com/Packages/com.unity.barracuda@1.0/manual/index.html) / 
+[github](https://github.com/Unity-Technologies/barracuda-release)
+
+- Example:
+
+  - [Data](codes/tir.txt)
+
+  - [Jupyter training](codes/tir-keras.html) / [download](codes/tir-keras.ipynb)
+
+  - [C# script](codes/pred.html).red[*] / [download](codes/pred.cs)
+]]
+
+.footnote[.red[*] Formated with http://hilite.me/]
+
+---
 class: left, middle, inverse
 
 # Outline
@@ -1123,15 +1168,27 @@ class: left, middle, inverse
 
 ---
 
-# OpenAI Gym
+# [OpenAI Gym](https://gym.openai.com/)
 
-**Example:** 
+*Toolkit for developing and comparing reinforcement learning algorithms.*
 
-- CartPole from [OpenAi Gym](https://gym.openai.com/):
+### [CartPole](https://gym.openai.com/envs/CartPole-v1/)
 
-.center[![:scale 50%](figures/cartpole.gif)]
+.cols5050[
+.col1[
+![:scale 100%](figures/cartpole.gif)
+]
+.col2[
+.blue[Gym]:
+- Input: `action` (0 or 1); training target
+- Output: 
+  - `next_state`, `reward`, `info`; training features 
+  - `done`: game ended? <br>
+`max: 501`
+- [code](codes/cartpole-rg.html) / [py](codes/cartpole-rg.py) / [log](codes/log.rg.txt)
+]]
 
-- [Deep Q-Learning with Keras and Gym](https://keon.io/deep-q-learning/)
+- Gaëtan Juvin. [My Journey Into Deep Q-Learning with Keras and Gym](https://medium.com/@gtnjuvin/my-journey-into-deep-q-learning-with-keras-and-gym-3e779cc12762) ([github](https://github.com/GaetanJUVIN/Deep_QLearning_CartPole)), 2017.
 
 ---
 
@@ -1171,17 +1228,35 @@ class: left, middle, inverse
 
 - Sefik Ilkin Serengil. [chefboost](https://github.com/serengil/chefboost) (2019): [_A Step by Step CART Decision Tree Example_](https://sefiks.com/2018/08/27/a-step-by-step-cart-decision-tree-example/) (2018). 
 
-- Ian Millington. _AI for Games_ (3rd edition). CRC Press, 2019.
-
-- [_Keras Documentation_](https://keras.io/). 
+- Gaëtan Juvin. [My Journey Into Deep Q-Learning with Keras and Gym](https://medium.com/@gtnjuvin/my-journey-into-deep-q-learning-with-keras-and-gym-3e779cc12762) ([github](https://github.com/GaetanJUVIN/Deep_QLearning_CartPole)), 2017.
 
 - DeepMind. [Deep Reinforcement Learning](https://deepmind.com/blog/article/deep-reinforcement-learning).
 
+- Ian Millington. _AI for Games_ (3rd edition). CRC Press, 2019.
+
 - Micheal Lanham. _Learn Unity ML-Agents - Fundamental of Unity Machine Learning_. Packt, 2018.
+
+---
+
+# Videos
 
 - Károly Zsolnai-Fehér. [OpenAI Plays Hide and Seek…and Breaks The Game!](https://www.youtube.com/watch?v=Lu56xVlZ40M). Two Minute Papers.
 
 - Károly Zsolnai-Fehér. [DeepMind’s AlphaStar: A Grandmaster Level StarCraft 2 AI](https://www.youtube.com/watch?v=jtlrWblOyP4). Two Minute Papers.
 
-- Siraj Raval. [How to Make an Amazing Video Game Bot Easily](https://www.youtube.com/watch?v=mGYU5t8MO7s&t=313s), 2016.
+- Siraj Raval. [How to Make an Amazing Video Game Bot Easily](https://www.youtube.com/watch?v=mGYU5t8MO7s&t=313s) (OpenAI Gym),  2016.
 
+## Documentation
+
+.cols5050[
+.col1[
+- [_Keras Documentation_](https://keras.io/). 
+
+- [_Barracuda_](https://docs.unity3d.com/Packages/com.unity.barracuda@1.0/manual/index.html).
+
+- [_ONNX_](https://onnx.ai/).
+]
+.col2[
+- aigym
+- mlagents
+]]
