@@ -1298,6 +1298,9 @@ class: left, middle, inverse
 
 - Siraj Raval. [How to Make an Amazing Video Game Bot Easily](https://www.youtube.com/watch?v=mGYU5t8MO7s&t=313s) (OpenAI Gym),  2016.
 
+- Adam Kelly. [ML-Agents: Hummingbirds](https://learn.unity.com/course/ml-agents-hummingbirds). Unity Learn.
+
+
 ## Documentation
 
 .cols5050[
@@ -1309,6 +1312,9 @@ class: left, middle, inverse
 - [_ONNX_](https://onnx.ai/).
 ]
 .col2[
-- aigym
-- mlagents
+- [OpenAI Gym](https://gym.openai.com/)
+
+- [_ML-Agents_](https://github.com/Unity-Technologies/ml-agents)
+
+- [_scikit-learn_](https://scikit-learn.org/stable/index.html)
 ]]
