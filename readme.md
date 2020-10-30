@@ -1200,7 +1200,7 @@ Unity plugin for training intelligent agents.
 
 Address: https://github.com/Unity-Technologies/ml-agents
 
-Contain .blue[Deep Learning] & .blue[Reinforcement Learning]
+Contain: .blue[AI Gym], .blue[Deep Learning] & .blue[Reinforcement Learning].
 
 ---
 
@@ -1209,7 +1209,7 @@ Contain .blue[Deep Learning] & .blue[Reinforcement Learning]
 Unity Learn [course](https://learn.unity.com/course/ml-agents-hummingbirds) by Adam Kelly.
 
 .center[
-![:scale 70%](figures/hummingbird.webp)<br>
+[![:scale 70%](figures/hummingbird.webp)](figures/colibri.mkv)<br>
 [source](https://learn.unity.com/course/ml-agents-hummingbirds)
 ]
 
@@ -1239,21 +1239,52 @@ Navigate to flowers, dip their beaks in, and drink nectar.
 
 - Several raycasts that act like LIDAR so that the agent can avoid obstacles
 
+```
+public override void CollectObservations(VectorSensor sensor)
+    sensor.AddObservation(new float[10]);
+```
+
 .footnote[[source](https://learn.unity.com/course/ml-agents-hummingbirds)]
 
 ---
 
 # Hummingbirds: Rewards
 
-- A small positive reward each timestep if tehe bird's beak is touching the nectar
+- A small positive reward each timestep if tehe bird's beak is touching the nectar: `AddReward(.01)`
 
-- A large negative reward or hitting the ground or boundaries of the training area
+- A large negative reward or hitting the ground or boundaries of the training area: `AddReward(-.5f)`
 
 .center[
 ![:scale 80%](figures/rewards.png)
 ]
 
 .footnote[[source](https://learn.unity.com/course/ml-agents-hummingbirds)]
+
+---
+
+# Hummingbirds: Actions
+
+Output of the Neural Network:
+
+```
+    /// <summary>
+    /// Called when and action is received from either
+    /// the player input or the neural network
+    /// 
+    /// vectorAction[i] represents:
+    /// Index 0: move vector x (+1 = right, -1 = left)
+    /// Index 1: move vector y (+1 = up, -1 = down)
+    /// Index 2: move vector z (+1 = forward, -1 = backward)
+    /// Index 3: pitch angle (+1 = pitch up, -1 = pitch down)
+    /// Index 4: yaw angle (+1 = turn right, -1 = turn left)
+    /// </summary>
+    /// <param name="vectorAction">The actions to take</param>
+
+    public override void OnActionReceived(float[] vectorAction)
+    {
+        ...
+    };
+```
 
 ---
 class: left, middle, inverse
