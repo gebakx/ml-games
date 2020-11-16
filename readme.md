@@ -598,9 +598,9 @@ _white_ examples without _cap-color_
 | class      | width | cutting points | weighted ginis |
 |:-----------|------:|---------------:|:---------------|
 | virginica  | 2.5   |      |   | 
-| versicolor | 2.9   | 2.7  | $\frac{1}{4}\cdot 0.0+\frac{3}{4}\cdot 0.45=0.0.3375$ |
+| versicolor | 2.9   | 2.7  | $\frac{1}{4}\cdot 0.0+\frac{3}{4}\cdot 0.45=0.3375$ |
 | versicolor | 2.9   |      |   |
-| virginica  | 3.0   | 2.95 | $\frac{3}{4}\cdot 0.45+\frac{1}{4}\cdot 0.0=0.0.3375$ |
+| virginica  | 3.0   | 2.95 | $\frac{3}{4}\cdot 0.45+\frac{1}{4}\cdot 0.0=0.3375$ |
 .center[.small[cutting points for _width_ attribute]]
 
 ---
@@ -678,7 +678,7 @@ $$\sigma=11.472$$
 $$\sigma_{weighted}=\frac{2}{5}\cdot 2.5+\frac{3}{5}\cdot 12.356=8.414$$
 
 **$\sigma$ reduction:**
-$$\sigma_{reduction}=11.543-8.414=3.129$$
+$$\sigma_{reduction}=11.472-8.414=3.058$$
 ]]
 
 .cols5050[
@@ -696,7 +696,7 @@ $$\sigma_{reduction}=11.543-8.414=3.129$$
 $$\sigma_{weighted}=\frac{3}{5}\cdot 11.441+\frac{2}{5}\cdot 3.5=8.265$$
 
 **$\sigma$ reduction:**
-$$\sigma_{reduction}=11.543-8.265=3.278$$
+$$\sigma_{reduction}=11.472-8.265=3.207$$
 ]]
 
 Wins the highest score: .blue[**wind**]
@@ -779,7 +779,7 @@ $$h(x)=f(\sum_{i=1}^n w_i x_i + b)$$
 
 - Learning rule:
 
-$$w_i'=w_i+\eta(h(x)-y)$$
+$$w_i'=w_i+\eta(h(x)-y)x$$
 ]
 .col2[
 
