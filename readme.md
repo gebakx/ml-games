@@ -768,22 +768,24 @@ class: left, middle, inverse
 
 .cols5050[
 .col1[
+- Classifier and regressor 
+  - One neuron (or unit)
+  - Linear model
 
-- Classification and regression
+- [Learning process](https://towardsdatascience.com/perceptron-learning-algorithm-d5db0deab975):
+  - Find hyperplane that splits the data set
+$$\sum_{i=1}^nw_ix_i+b=0$$
 
-- Linear model
-
-- Classification:
+- Prediction formula:
 
 $$h(x)=f(\sum_{i=1}^n w_i x_i + b)$$
 
-- Learning rule:
-
-$$w_i'=w_i+\eta(h(x)-y)x$$
 ]
 .col2[
 
-![:scale 100%](figures/hyperplane.png)
+![:scale 80%](figures/hyperplane2.png)
+
+![:scale 80%](figures/hyperplane.png)
 
 ]]
 
@@ -796,15 +798,13 @@ $$w_i'=w_i+\eta(h(x)-y)x$$
 
 .cols5050[
 .col1[
-- One hidden layer
-
-- Non-linear model
-
 - .blue[Classification & regression]
+  - One hidden layer
+  - Non-linear model
 
-- .blue[Backpropagation]: <br>
-Gradient descent: $W$ <br>
-Loss function: $error(h(x),y)$
+- Learning: .blue[backpropagation]: <br>
+  - Gradient descent: $W$ <br>
+  - Loss function: $error(h(x),y)$
 
 .center[![:scale 90%](figures/GradientDescent.png)]
 .center[[source](http://tuxar.uk/brief-introduction-artificial-neural-networks/)]
@@ -813,6 +813,14 @@ Loss function: $error(h(x),y)$
 .center[![:scale 80%](figures/mlp.png)]
 .center[[source](https://en.wikipedia.org/wiki/Artificial_neural_network)]
 ]]
+
+---
+
+# MLP Capabilities
+
+![:scale 95%](figures/mlp.jpg)
+
+.footnote[[source](http://www.neural-forecasting.com/mlp_neural_nets.htm)]
 
 ---
 
