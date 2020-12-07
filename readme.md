@@ -1126,11 +1126,11 @@ Learning a reward function $Q: S \times A \to \mathbb{R}$ for maximizing the tot
 
 ---
 
-# Q-table
-
-Training example:
+# Q-table Example
 
 .center[![:scale 55%](figures/q-matrix.png)]
+
+$Q(s_t,a_t)=Q(s_t,a_t)+\alpha[r_t+\gamma \max_aQ(s_u,a)-Q(s_t,a_t)], u=t+1$
 
 .footnote[Source: [Reinforcement Q-Learning from Scratch in Python with OpenAI Gym](https://www.learndatasci.com/tutorials/reinforcement-q-learning-scratch-python-openai-gym/)]
 
